@@ -13,8 +13,9 @@
 #include <sys/resource.h>
 #include <getopt.h>
 #include <syslog.h>
+#ifdef CONFIG_LINUX
+#include <sys/capability.h>
 #include <sys/fsuid.h>
-#include <sys/vfs.h>
 #include <sys/ioctl.h>
 #include <linux/fs.h>
 #ifdef CONFIG_LINUX_MAGIC_H
@@ -24,6 +25,7 @@
 #include "qemu-common.h"
 #include "qemu/sockets.h"
 #include "qemu/xattr.h"
+#include "qemu/statfs.h"
 #include "9p-iov-marshal.h"
 #include "hw/9pfs/9p-proxy.h"
 #include "fsdev/9p-iov-marshal.h"
