@@ -5754,8 +5754,18 @@ if [ "$eventfd" = "yes" ]; then
 fi
 
 if test "$softmmu" = yes ; then
-  if test "$linux" = yes; then
-    if test "$virtfs" != no && test "$cap_ng" = yes && test "$attr" = yes ; then
+  if test "$virtfs" != no; then
+    if test "$linux" = yes; then
+      if test "$cap" = yes && test "$attr" = yes ; then
+        virtfs=yes
+        tools="$tools fsdev/virtfs-proxy-helper\$(EXESUF)"
+      else
+        if test "$virtfs" = yes; then
+          error_exit "VirtFS requires libcap devel and libattr devel under Linux"
+        fi
+        virtfs=no
+      fi
+    elif test "$darwin" = yes; then
       virtfs=yes
     else
       if test "$virtfs" = yes; then
@@ -5765,9 +5775,28 @@ if test "$softmmu" = yes ; then
     fi
   else
     if test "$virtfs" = yes; then
-      error_exit "VirtFS is supported only on Linux"
+      error_exit "VirtFS is supported only on Linux and Darwin"
+      virtfs=no
     fi
-    virtfs=no
+  fi
+  if test "$linux" = yes; then
+    if test "$mpath" != disabled && test "$mpathpersist" = enabled ; then
+      mpath=enabled
+    else
+      if test "$mpath" = enabled; then
+        error_exit "Multipath requires libmpathpersist devel"
+      fi
+      mpath=disabled
+    fi
+    tools="$tools scsi/qemu-pr-helper\$(EXESUF)"
+  else
+    if test "$mpath" = enabled; then
+      error_exit "Multipath is supported only on Linux"
+    fi
+    mpath=disabled
+  fi
+  if test "$xkbcommon" = "yes"; then
+    tools="qemu-keymap\$(EXESUF) $tools"
   fi
 fi
 
