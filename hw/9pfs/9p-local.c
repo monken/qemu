@@ -794,7 +794,7 @@ static int local_fstat(FsContext *fs_ctx, int fid_type,
             stbuf->st_rdev = le64_to_cpu(tmp_dev);
         }
     } else if (fs_ctx->export_flags & V9FS_SM_MAPPED_FILE) {
-        errno = EOPNOTSUPP;
+        errno = P9_EOPNOTSUPP;
         return -1;
     }
     return err;

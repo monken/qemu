@@ -2284,7 +2284,7 @@ static void coroutine_fn v9fs_read(void *opaque)
                 "9p: bad client: T_read request on directory only expected "
                 "with 9P2000.u protocol version"
             );
-            err = -EOPNOTSUPP;
+            err = -P9_EOPNOTSUPP;
             goto out;
         }
         if (off == 0) {
@@ -2535,7 +2535,7 @@ static void coroutine_fn v9fs_readdir(void *opaque)
             "9p: bad client: T_readdir request only expected with 9P2000.L "
             "protocol version"
         );
-        retval = -EOPNOTSUPP;
+        retval = -P9_EOPNOTSUPP;
         goto out;
     }
     count = v9fs_do_readdir(pdu, fidp, (off_t) initial_offset, max_count);
@@ -3046,9 +3046,9 @@ static void coroutine_fn v9fs_remove(void *opaque)
         err = -EINVAL;
         goto out_nofid;
     }
-    /* if fs driver is not path based, return EOPNOTSUPP */
+    /* if fs driver is not path based, return P9_EOPNOTSUPP */
     if (!(pdu->s->ctx.export_flags & V9FS_PATHNAME_FSCONTEXT)) {
-        err = -EOPNOTSUPP;
+        err = -P9_EOPNOTSUPP;
         goto out_err;
     }
     /*
@@ -3240,9 +3240,9 @@ static void coroutine_fn v9fs_rename(void *opaque)
         err = -EINVAL;
         goto out;
     }
-    /* if fs driver is not path based, return EOPNOTSUPP */
+    /* if fs driver is not path based, return P9_EOPNOTSUPP */
     if (!(pdu->s->ctx.export_flags & V9FS_PATHNAME_FSCONTEXT)) {
-        err = -EOPNOTSUPP;
+        err = -P9_EOPNOTSUPP;
         goto out;
     }
     v9fs_path_write_lock(s);
@@ -4042,7 +4042,7 @@ static CoroutineEntry *pdu_co_handlers[] = {
 static void coroutine_fn v9fs_op_not_supp(void *opaque)
 {
     V9fsPDU *pdu = opaque;
-    pdu_complete(pdu, -EOPNOTSUPP);
+    pdu_complete(pdu, -P9_EOPNOTSUPP);
 }
 
 static void coroutine_fn v9fs_fs_ro(void *opaque)

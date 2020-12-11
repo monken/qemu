@@ -38,7 +38,7 @@ ssize_t v9fs_get_xattr(FsContext *ctx, const char *path,
     if (xops) {
         return xops->getxattr(ctx, path, name, value, size);
     }
-    errno = EOPNOTSUPP;
+    errno = P9_EOPNOTSUPP;
     return -1;
 }
 
@@ -141,7 +141,7 @@ int v9fs_set_xattr(FsContext *ctx, const char *path, const char *name,
     if (xops) {
         return xops->setxattr(ctx, path, name, value, size, flags);
     }
-    errno = EOPNOTSUPP;
+    errno = P9_EOPNOTSUPP;
     return -1;
 
 }
@@ -153,7 +153,7 @@ int v9fs_remove_xattr(FsContext *ctx,
     if (xops) {
         return xops->removexattr(ctx, path, name);
     }
-    errno = EOPNOTSUPP;
+    errno = P9_EOPNOTSUPP;
     return -1;
 
 }

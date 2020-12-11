@@ -82,7 +82,7 @@ int coroutine_fn v9fs_co_fstat(V9fsPDU *pdu, V9fsFidState *fidp,
      * Some FS driver (local:mapped-file) can't support fetching attributes
      * using file descriptor. Use Path name in that case.
      */
-    if (err == -EOPNOTSUPP) {
+    if (err == -P9_EOPNOTSUPP) {
         err = v9fs_co_lstat(pdu, &fidp->path, stbuf);
         if (err == -ENOENT) {
             /*

@@ -402,6 +402,9 @@ struct V9fsState {
 #define P9_LOCK_FLAGS_BLOCK 1
 #define P9_LOCK_FLAGS_RECLAIM 2
 
+/* Error types */
+#define P9_EOPNOTSUPP 95
+
 typedef struct V9fsFlock
 {
     uint8_t type;
