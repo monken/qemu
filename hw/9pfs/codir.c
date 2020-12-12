@@ -162,7 +162,16 @@ static int do_readdir_many(V9fsPDU *pdu, V9fsFidState *fidp,
         }
 
         size += len;
+#ifdef CONFIG_LINUX
         saved_dir_pos = dent->d_off;
+#endif
+#ifdef CONFIG_DARWIN
+/*
+ * It seems like there are two directory entries per element on Darwin.
+ * Increasing the d_seekoff by one works out in this case.
+ */
+        saved_dir_pos = dent->d_seekoff + 1;
+#endif
     }
 
     /* restore (last) saved position */
